@@ -1,0 +1,12 @@
+<h2>All Authors</h2>
+<form action="/authors" method="GET">
+    <label>Name</label>
+    <input type="text" name="name" value="<%= searchOptions.name.trim() %> ">
+    <button type="submit">Search</button>
+</form>
+
+<% authors.map(author=> { %>
+    <div>
+        <%= author.name %>
+    </div>
+    <% }) %>
