@@ -9,4 +9,17 @@
     <div>
         <%= author.name %>
     </div>
+    <button onclick="deleteUser('<%= author.name %>')">Delete</button>
     <% }) %>
+
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+            <script>
+                async function deleteUser(name) {
+                    res = await axios({
+                        method: 'DELETE',
+                        url: `/authors/${name}`
+                    })
+                    window.location.reload()
+                }
+            </script>

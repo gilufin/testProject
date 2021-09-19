@@ -37,6 +37,20 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.delete('/:name', async (req, res) => {
+    try {
+        const author = await Author.findOne({ name: req.params.name })
+        if (author == null) {
+            res.status(400).json({ message: 'cannot find this author' })
+        } else {
+            await author.remove()
+            res.status(201).send('delete succesfully')
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+
+})
 
 
 module.exports = router
