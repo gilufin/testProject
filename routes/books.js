@@ -3,17 +3,7 @@ const router = express.Router()
 const Author = require('../models/author.model')
 const Book = require('../models/book.model')
 const path = require('path')
-const fs = require('fs')
-const multer = require('multer')
-const uploadPath = path.join('public', Book.coverImageBasePath)
 const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
-const upload = multer({
-    dest: uploadPath,
-    fileFilter: (req, file, callback) => {
-        callback(null, imageMimeTypes.includes(file.mimetype))
-    }
-})
-
 
 // Getting All Books
 router.get('/', async (req, res) => {
@@ -44,26 +34,33 @@ router.get('/new', async (req, res) => {
 })
 
 // Create new Book
-router.post('/', upload.single('cover'), async (req, res) => {
-    const fileName = req.file ? req.file.filename : null
+router.post('/', async (req, res) => {
     const newBook = new Book({
         title: req.body.title,
         description: req.body.description,
         publishDate: new Date(req.body.publishDate),
         author: req.body.author,
         pageCount: req.body.pageCount,
-        coverImageName: fileName
     })
+    saveCover(newBook, req.body.cover)
 
     try {
         const savedBook = await newBook.save()
         // res.redirect(`/books/${savedBook.id`)
         res.redirect('/books')
     } catch (err) {
-        if (newBook.coverImageName) removeBookCover(newBook.coverImageName)
         renderNewPage(res, newBook, true)
     }
 })
+
+function saveCover(book, coverEncoded) {
+    if (!coverEncoded) return
+    const cover = JSON.parse(coverEncoded)
+    if (cover && imageMimeTypes.includes(cover.type)) {
+        book.coverImage = new Buffer.from(cover.data, 'base64')
+        book.coverImageType = cover.type
+    }
+}
 
 async function renderNewPage(res, book, hasError = false) {
     try {
@@ -79,11 +76,5 @@ async function renderNewPage(res, book, hasError = false) {
     }
 }
 
-function removeBookCover(fileName) {
-    fs.unlink(path.join(uploadPath, fileName), err => {
-        if (err) console.error(err)
-        else console.log('File Deleted : ' + fileName)
-    })
-}
 
 module.exports = router
