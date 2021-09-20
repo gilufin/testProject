@@ -1,6 +1,7 @@
 require('dotenv').config()
 
-const authorRouter = require('./routes/author')
+const authorsRouter = require('./routes/authors')
+const booksRouter = require('./routes/books')
 const indexRouter = require('./routes/index')
 const express = require('express')
 const app = express()
@@ -19,8 +20,10 @@ app.set('layout', './layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
+
 app.use('/', indexRouter)
-app.use('/authors', authorRouter)
+app.use('/authors', authorsRouter)
+app.use('/books', booksRouter)
 
 
 app.listen(process.env.PORT, () => console.log('Server Started'))
