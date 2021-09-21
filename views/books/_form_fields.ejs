@@ -12,12 +12,12 @@
     <select name="author">
 
         <% authors.map(author=> { %>
-            <% if (book.author==author.id) { %>
-                <option selected label="<%= author.name %>" value="<%= author.id %>"></option>
-                <% } else { %>
-                    <option label="<%= author.name %>" value="<%= author.id %>"></option>
-                    <% } %>
-                        <% }) %>
+        <% if (book.author==author.id) { %>
+        <option selected label="<%= author.name %>" value="<%= author.id %>"></option>
+        <% } else { %>
+        <option label="<%= author.name %>" value="<%= author.id %>"></option>
+        <% } %>
+        <% }) %>
     </select>
 </div>
 

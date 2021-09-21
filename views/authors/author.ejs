@@ -5,8 +5,8 @@
 <a href="/authors/<%= author.id %>/edit">Edit</a>
 <%- include('../partials/deleteForm.ejs', {url: `/authors/${author.id}`}) %>
 
-    <h2>Books By Author</h2>
+<h2>Books By Author</h2>
 
-    <% books.map(book=> { %>
-        <img height="150" width="100" src="<%= book.coverImagePath %>">
-        <% }) %>
+<% books.map(book=> { %>
+<img height="150" width="100" src="<%= book.coverImagePath %>">
+<% }) %>
